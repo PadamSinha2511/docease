@@ -1,12 +1,47 @@
 import React from "react"
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import {ZegoUIKitPrebuilt} from "@zegocloud/zego-uikit-prebuilt"
+import { UserState } from "@/context/UserProvider";
+
 
 const Room = ()=>{
 
     const {roomid} = useParams();
+    const navigate = useNavigate();
+    const {user,loading,setUser} = UserState();
+    const myMeeting = async(element)=>{
+        const appID=715584205
+        const serverSecret = "692759af6fa31e0fc57b8d17957a6a0e"
+        const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(appID,serverSecret,roomid,user._id,user.name)
+
+        const zc = ZegoUIKitPrebuilt.create(kitToken);
+        zc.joinRoom({
+            container:element,
+            scenario:{
+                mode:ZegoUIKitPrebuilt.OneONoneCall,
+            },
+            showScreenSharingButton:false,
+            onLeaveRoom:()=>{
+                if(user.role==='doctor')
+                    {
+
+                        
+
+
+                        navigate("/doctorspage")
+                    }
+                    else{
+                        navigate("/patientspage")
+                    }
+
+            }
+        })
+
+        
+    }
     return(
         <div>
-            This is room {roomid}
+            <div ref={myMeeting}/>
         </div>
     )
 }

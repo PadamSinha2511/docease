@@ -10,10 +10,75 @@ import DoctorImage1 from "../assets/doctor-1.jpg"
 import DoctorImage5 from "../assets/doctor-5.png"
 import DoctorImage4 from "../assets/doctor-4.jpg"
 import PatientImage1 from"../assets/patient-image-1.jpg"
+import { UserState } from "@/context/UserProvider"
+import { useEffect, useState } from "react"
+import axios from "axios"
+import io from "socket.io-client"
+import { useNavigate } from "react-router-dom"
+
+const socket = io("http://localhost:8080");
 
 export default function PatientPortal() {
+  const {user,loading,setUser} = UserState();
+  const[allAppt,setAllAppt]  = useState([])
+  const[start,setStart] = useState(false)
+  const navigate = useNavigate();
+  useEffect(()=>{
+    if (!user) return;
+
+    const getAllAppt = async () => {
+      try {
+        const { data } = await axios.post("http://localhost:8080/api/appt/patient", {
+          patientId: user._id,
+        });
+
+        setAllAppt(data.allAppointment);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const storedStart = localStorage.getItem('start');
+    if (storedStart) {
+      setStart(JSON.parse(storedStart));
+    }
+
+    getAllAppt();
+
+    console.log("Initial appointments:", allAppt);
+
+    socket.on('appointmentUpdated', (updatedAppt) => {
+      setAllAppt((prevAppts) => {
+        // Log previous and updated appointments
+        console.log("Previous appointments:", prevAppts);
+        console.log("Updated appointment:", updatedAppt);
+
+        const updatedAppointments = prevAppts.map((appt) =>
+          appt._id === updatedAppt._id ? updatedAppt : appt
+        );
+
+        // Log new state
+        console.log("New appointments state:", updatedAppointments);
+        
+        return updatedAppointments;
+      });
+
+      setStart(true);
+      localStorage.setItem('start', JSON.stringify(true));
+    });
+
+    return () => {
+      socket.off('appointmentUpdated');
+    };
+  },[user])
+
+  const handleJoinRoom=(roomid)=>{
+    navigate(`/room/${roomid}`)
+  }
+
   return (
     <Card className="border">
+      {console.log(allAppt)}
         <><Navbar/></>
       <CardHeader>
         <CardTitle>Your Profile</CardTitle>
@@ -23,16 +88,16 @@ export default function PatientPortal() {
               alt="Your Avatar"
               className="rounded-full"
               height="48"
-              src={PatientImage1}
+              src={user.photo}
               style={{
                 aspectRatio: "48/48",
                 objectFit: "cover",
               }}
               width="48" />
             <div>
-              <div className="font-semibold text-lg">Harsh Verma</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">Patient</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">General Hospital</div>
+              <div className="font-semibold text-lg">{user.name}</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Email : {user.email}</div>
+              {/* <div className="text-sm text-gray-500 dark:text-gray-400">General Hospital</div> */}
             </div>
           </div>
         </CardContent>
@@ -44,21 +109,24 @@ export default function PatientPortal() {
       <CardContent className="flex flex-col gap-4 overflow-auto">
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 space-y-2">
+
+              {allAppt.map((row)=>(
+
+            <div key={row._id} className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 space-y-2">
               <div className="flex items-center gap-2">
                 <img
                   alt="Avatar"
                   className="rounded-full"
                   height="40"
-                  src={DoctorImage1}
+                  src={row.doctorId.photo}
                   style={{
                     aspectRatio: "40/40",
                     objectFit: "cover",
                   }}
                   width="40" />
                 <div>
-                  <div className="font-semibold">Dr. Varenya Singh</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Cardiologist</div>
+                  <div className="font-semibold">{row.doctorId.name}</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">{row.doctorId.specialty}</div>
                 </div>
               </div>
               <div className="flex items-center justify-between">
@@ -66,83 +134,28 @@ export default function PatientPortal() {
                 <div className="text-sm text-gray-500 dark:text-gray-400">10:00 AM</div>
               </div>
               <div className="flex items-center justify-between gap-2">
-                <div className="text-sm font-medium text-yellow-500">Pending</div>
+                <div className="text-sm font-medium text-yellow-500">{row.status}</div>
                 <div className="flex gap-2">
-                  <Button disabled size="sm" variant="outline">
+                {console.log(start)}
+                  {start?(
+                    <Button onClick={()=>handleJoinRoom(row._id)} size="sm" variant="outline">
                     Join Meeting
                   </Button>
+                  ):(
+                    <Button disabled size="sm" variant="outline">
+                    Join Meeting
+                  </Button>
+                  )}
                   <Button size="sm" variant="outline">
                     Cancel Request
                   </Button>
                 </div>
               </div>
             </div>
-            <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 space-y-2">
-              <div className="flex items-center gap-2">
-                <img
-                  alt="Avatar"
-                  className="rounded-full"
-                  height="40"
-                  src={DoctorImage5}
-                  style={{
-                    aspectRatio: "40/40",
-                    objectFit: "cover",
-                  }}
-                  width="40" />
-                <div>
-                  <div className="font-semibold">Dr. Chulli Chaurasia</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Dermatologist</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500 dark:text-gray-400">Fever</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">10:30 AM</div>
-              </div>
-              <div className="flex items-center justify-between gap-2">
-                <div className="text-sm font-medium text-green-500">Accepted</div>
-                <div className="flex gap-2">
-                  <Button size="sm" variant="outline" className="bg-purple-600 text-white">
-                    Join Meeting
-                  </Button>
-                  <Button size="sm" variant="outline">
-                    Cancel Request
-                  </Button>
-                </div>
-              </div>
-            </div>
-            <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 space-y-2">
-              <div className="flex items-center gap-2">
-                <img
-                  alt="Avatar"
-                  className="rounded-full"
-                  height="40"
-                  src={DoctorImage4}
-                  style={{
-                    aspectRatio: "40/40",
-                    objectFit: "cover",
-                  }}
-                  width="40" />
-                <div>
-                  <div className="font-semibold">Dr. Shipra Chaubey</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Pediatrician</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500 dark:text-gray-400">Cough</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">11:00 AM</div>
-              </div>
-              <div className="flex items-center justify-between gap-2">
-                <div className="text-sm font-medium text-red-500">Declined</div>
-                <div className="flex gap-2">
-                  <Button disabled size="sm" variant="outline">
-                    Join Meeting
-                  </Button>
-                  <Button size="sm" variant="outline">
-                    Cancel Request
-                  </Button>
-                </div>
-              </div>
-            </div>
+              ))}
+
+           
+            
           </div>
         </div>
       </CardContent>

@@ -10,7 +10,7 @@ import SignupPage from './pages/SignUp';
 import LandingPage from './pages/LandingPage'
 
 
-
+// import PatientDashboard from "./pages/"
 import DoctorsPortal from './pages/DoctorsPortal'
 import ProtectedRoute from './components/auth/Protected';
 import Room from './components/room/Room';
@@ -28,7 +28,7 @@ function App() {
             <Route path="/" element={<LandingPage/>} />
 
             <Route path="/patientspage" element={<ProtectedRoute><PatientPortal/></ProtectedRoute>} />
-            {/* <Route path="/patientdashboard" element={<}/> */}
+            {/* <Route path="/patientdashboard" element={<PatientDashboard/>}/> */}
             <Route path="/doctorspage" element={<ProtectedRoute><DoctorsPortal/></ProtectedRoute>} />
             <Route path="/room/:roomid" element={<ProtectedRoute><Room/></ProtectedRoute>}/>
 

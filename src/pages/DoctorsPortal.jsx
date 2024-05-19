@@ -18,6 +18,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import io from "socket.io-client"
+import { useNavigate } from "react-router-dom"
+
+
+const socket = io("http://localhost:8080")
+
 
 export default function DoctorsPortal() {
 
@@ -51,9 +57,9 @@ export default function DoctorsPortal() {
 
 
   const {user,loading,setUser} = UserState();
-  const [time, setTime] = useState(false);
+  const [start, setStart] = useState(false);
   const[allAppt,setAllAppt]  = useState([])
-
+  const navigate = useNavigate();
   useEffect(()=>{
     if (!user) return;
 
@@ -74,6 +80,38 @@ export default function DoctorsPortal() {
     
   },[user])
 
+  useEffect(()=>{},[allAppt])
+
+
+  const handleDecline =async (id)=>{
+    try {
+        const {data} = await axios.post("http://localhost:8080/api/appt/decline",{
+          id
+        })
+        console.log(data)
+        if (data.success) {
+          
+          setAllAppt(prevAppt => prevAppt.filter(appt => appt._id !== id));
+        }
+
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleAccept = async(id)=>{
+    try {
+      const { data } = await axios.post("http://localhost:8080/api/appt/accept", { id });
+      socket.emit('appointmentUpdated', data); // Emit event manually (optional, handled in backend)
+       setStart(true)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleJoinRoom=(roomid)=>{
+    navigate(`/room/${roomid}`)
+  }
 
   if (loading) {
     return <div>Loading...</div>; // You can return a loading spinner here
@@ -224,7 +262,7 @@ export default function DoctorsPortal() {
    <>
     <Card className="border">
          <><Navbar/></>
-
+    
      <CardHeader>
        <CardTitle className="mb-4">Your Profile</CardTitle>
        <CardContent className="border p-4">
@@ -277,7 +315,25 @@ export default function DoctorsPortal() {
               <StyledTableCell align="right">{row.status}</StyledTableCell>
               <StyledTableCell align="right">Time</StyledTableCell>
               <StyledTableCell align="right">
-                <button>Test</button>
+
+              {start?(
+
+              <Button onClick={()=>handleJoinRoom(row._id)} size="sm" variant="outline">
+              Join Meeting
+              </Button>
+
+              ):(
+               <div className="">
+                  <Button onClick={()=>handleAccept(row._id)}  size="sm" variant="outline">
+                    Accept
+                  </Button>
+                  <Button onClick={()=>handleDecline(row._id)} size="sm" variant="outline">
+                    Decline
+                  </Button>
+                </div>
+              )}
+
+              
               </StyledTableCell>
               <StyledTableCell align="right">{row.patientId.medicalHistory}</StyledTableCell>
             </StyledTableRow>

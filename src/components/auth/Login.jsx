@@ -302,7 +302,7 @@ export default function Login() {
       if (isDoctor) {
         navigate("/doctorspage");
       } else {
-        navigate("/");
+        navigate("/patientspage");
       }
     } catch (error) {
       console.log(error);
