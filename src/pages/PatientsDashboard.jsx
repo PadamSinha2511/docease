@@ -10,23 +10,9 @@ import DoctorImage1 from "../assets/doctor-1.jpg"
 import DoctorImage5 from "../assets/doctor-5.png"
 import DoctorImage4 from "../assets/doctor-4.jpg"
 import PatientImage1 from"../assets/patient-image-1.jpg"
-import { useNavigate } from "react-router-dom"
-import { UserState } from "@/context/UserProvider"
-
-export default function PatientPortal() {
-   
-  // const navigate = useNavigate();
-  // const { setUser } = UserState();
-
-  // const logout = () => {
-  //   localStorage.clear();
-  //   setUser(null);
-  //   navigate('/login');
-  // };
-
-
+export default function PatientsDashboard() {
   return (
-    <Card className="border">
+    (<Card className="border">
         <><Navbar/></>
       <CardHeader>
         <CardTitle>Your Profile</CardTitle>
@@ -159,28 +145,9 @@ export default function PatientPortal() {
           </div>
         </div>
       </CardContent>
-      {/* <CardFooter>
-        <Button className="ml-auto bg-purple-600" onClick={logout}>Logout</Button>
-      </CardFooter> */}
-    </Card>
-  );
-}
-
-
-function MountainIcon(props) {
-  return (
-    (<svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round">
-      <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
-    </svg>)
+      <CardFooter>
+        <Button className="ml-auto bg-purple-600">Logout</Button>
+      </CardFooter>
+    </Card>)
   );
 }

@@ -3,10 +3,27 @@ import {
   Typography,
   IconButton,
 } from "@material-tailwind/react";
-import { BellIcon, Cog6ToothIcon } from "@heroicons/react/24/solid";
-
+import { UserCircleIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/solid";
+import { useNavigate } from "react-router-dom";
+import { UserState } from "@/context/UserProvider";
 
 export default function NavbarDark() {
+  const navigate = useNavigate();
+  const { user, setUser } = UserState();
+
+  const logout = () => {
+    localStorage.clear();
+    setUser(null);
+    navigate('/login');
+  };
+
+  const navigateToProfile = () => {
+    if(user.role == 'patient')
+    navigate('/patientspage');
+  else
+  navigate('/doctorspage');
+  };
+
   return (
     <Navbar
       variant="gradient"
@@ -16,20 +33,23 @@ export default function NavbarDark() {
       <div className="flex flex-wrap items-center justify-between gap-y-4 text-black font-serif">
         <Typography
           as="a"
-          href="#"
+          href="http://localhost:5173/"
           variant="h6"
           className="mr-4 ml-2 cursor-pointer py-1.5"
         >
           DOCEASE
         </Typography>
-        <div className="ml-auto flex gap-1 md:mr-4">
-          <IconButton variant="text" >
-            <Cog6ToothIcon className="h-4 w-4 text-purple-600" />
-          </IconButton>
-          <IconButton variant="text" >
-            <BellIcon className="h-4 w-4 text-purple-600" />
-          </IconButton>
-                 
+        <div className="ml-auto flex items-center gap-4 md:mr-4">
+          {user && (
+            <>
+              <IconButton variant="text" onClick={navigateToProfile}>
+                <UserCircleIcon className="h-5 w-5 text-purple-600" />
+              </IconButton>
+              <IconButton variant="text" onClick={logout}>
+                <ArrowRightOnRectangleIcon className="h-5 w-5 text-purple-600" />
+              </IconButton>
+            </>
+          )}
         </div> 
       </div>
     </Navbar>

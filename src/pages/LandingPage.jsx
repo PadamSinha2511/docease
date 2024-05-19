@@ -9,14 +9,13 @@ import Navbar from '../components/auth/Navbar'
 import BenefitsLogo from '../assets/benefits.jpeg'
 import FeatureLogo from '../assets/features.jpeg'
 import { useNavigate  } from 'react-router-dom'
-import { UserState } from '@/context/UserProvider'
+import { UserState } from "@/context/UserProvider"
+
 
 
 export default function Component() {
   const navigate = useNavigate();
-
-  
-
+  const { user } = UserState();
   return (
     <div className="flex flex-col min-h-[100vh]">
       <header className="px-4 lg:px-6 h-14 flex items-center">
@@ -36,12 +35,21 @@ export default function Component() {
                 fingertips.
               </p>
             </div>
-            <div className="mx-auto w-full max-w-sm space-y-2">
-              <form className="flex space-x-2">
-                <Input className="max-w-lg flex-1" placeholder="Enter your symptoms" type="text" />
-                <Button className="bg-purple-600" type="submit" onClick = {()=>navigate("/patientspage")}>Search</Button>
-              </form>
-            </div>
+            <div className="mx-auto w-full max-w-sm space-y-2 mt-4">
+            {user ? (
+                // Render symptom input and search button if user is logged in
+                <form className="flex space-x-2">
+                  <Input className="max-w-lg flex-1" placeholder="Enter your symptoms" type="text" />
+                  <Button className="bg-purple-600" type="submit" onClick={() => navigate("/doctorsview")}>Search</Button>
+                </form>
+              ) : (
+                // Render login and signup buttons if user is not logged in
+                <div className="flex space-x-2 justify-center items-center">
+                  <Button className="bg-purple-600" onClick={() => navigate("/login")}>Log in</Button>
+                  <Button className="bg-purple-600" onClick={() => navigate("/signup")}>Sign Up</Button>
+                </div>
+              )}
+              </div>
           </div>
         </section>
         <section className="w-full py-12 md:py-24 lg:py-32">
@@ -66,7 +74,7 @@ export default function Component() {
               <div className="flex flex-col gap-2 min-[400px]:flex-row">
                 <Link
                   className="inline-flex h-10 items-center justify-center rounded-md bg-purple-600 px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
-                  to="/patientspage"
+                  to="/doctorsview"
                   >
                   Book Appointment
                 </Link>
@@ -143,10 +151,7 @@ export default function Component() {
                 </p>
               </div>
               <div className="mx-auto w-full max-w-sm space-y-2">
-                <form className="flex space-x-2">
-                  <Input className="max-w-lg flex-1" placeholder="Enter your email" type="email" />
-                  <Button className="bg-purple-600" type="submit" onClick = {()=> navigate("/signup")}>Sign Up</Button>
-                </form>
+               
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   Sign up to get notified when we launch.
                   <Link className="underline underline-offset-2" href="#">

@@ -15,6 +15,7 @@ import DoctorsPortal from './pages/DoctorsPortal'
 import ProtectedRoute from './components/auth/Protected';
 import Room from './components/room/Room';
 import PatientPortal from './pages/PatientsPortal';
+import DoctorsView from './pages/DoctorsView';
 
 
 
@@ -26,6 +27,7 @@ function App() {
             <Route path="/login" element={<LoginPage/>} />
             <Route path="/signup" element={<SignupPage/>} />
             <Route path="/" element={<LandingPage/>} />
+            <Route path="/doctorsview" element={<DoctorsView/>} />
 
             <Route path="/patientspage" element={<ProtectedRoute><PatientPortal/></ProtectedRoute>} />
             {/* <Route path="/patientdashboard" element={<}/> */}
