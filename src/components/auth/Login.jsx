@@ -283,7 +283,7 @@ export default function Login() {
 
       let response;
       if (isDoctor) {
-        response = await axios.post("http://localhost:8080/api/doctor/signin",
+        response = await axios.post("http://192.168.65.51:8080/api/doctor/signin",
           { email, password },
           config
         );
@@ -302,7 +302,7 @@ export default function Login() {
       if (isDoctor) {
         navigate("/doctorspage");
       } else {
-        navigate("/patientspage");
+        navigate("/doctorsview");
       }
     } catch (error) {
       console.log(error);
@@ -385,7 +385,7 @@ export default function Login() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="http://localhost:5173/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

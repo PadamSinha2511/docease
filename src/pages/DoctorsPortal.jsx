@@ -22,7 +22,7 @@ import io from "socket.io-client"
 import { useNavigate } from "react-router-dom"
 
 
-const socket = io("http://localhost:8080")
+const socket = io("http://192.168.65.51:8080")
 
 
 export default function DoctorsPortal() {
@@ -65,10 +65,10 @@ export default function DoctorsPortal() {
 
     const getAllAppt = async () => {
       try {
-        const { data } = await axios.post("http://localhost:8080/api/appt/doctor", {
+        const { data } = await axios.post("http://192.168.65.51:8080/api/appt/doctor", {
           doctorId: user._id,
         });
-
+        
         setAllAppt(data.allAppointment);
       } catch (error) {
         console.log(error);
@@ -85,7 +85,7 @@ export default function DoctorsPortal() {
 
   const handleDecline =async (id)=>{
     try {
-        const {data} = await axios.post("http://localhost:8080/api/appt/decline",{
+        const {data} = await axios.post("http://192.168.65.51:8080/api/appt/decline",{
           id
         })
         console.log(data)
@@ -101,8 +101,8 @@ export default function DoctorsPortal() {
   }
   const handleAccept = async(id)=>{
     try {
-      const { data } = await axios.post("http://localhost:8080/api/appt/accept", { id });
-      socket.emit('appointmentUpdated', data); // Emit event manually (optional, handled in backend)
+      const { data } = await axios.post("http://192.168.65.51:8080/api/appt/accept", { id });
+      socket.emit('appointmentUpdated', data); 
        setStart(true)
     } catch (error) {
       console.log(error);
@@ -315,8 +315,8 @@ export default function DoctorsPortal() {
               <StyledTableCell align="right">{row.status}</StyledTableCell>
               <StyledTableCell align="right">Time</StyledTableCell>
               <StyledTableCell align="right">
-
-              {start?(
+            {console.log(row.status)}
+              {start && row.status !== "completed"?(
 
               <Button onClick={()=>handleJoinRoom(row._id)} size="sm" variant="outline">
               Join Meeting
@@ -324,10 +324,10 @@ export default function DoctorsPortal() {
 
               ):(
                <div className="">
-                  <Button onClick={()=>handleAccept(row._id)}  size="sm" variant="outline">
+                  <Button onClick={()=>handleAccept(row._id)} disabled={row.status === "completed"}  size="sm" variant="outline">
                     Accept
                   </Button>
-                  <Button onClick={()=>handleDecline(row._id)} size="sm" variant="outline">
+                  <Button onClick={()=>handleDecline(row._id)} disabled={row.status === "completed"} size="sm" variant="outline">
                     Decline
                   </Button>
                 </div>

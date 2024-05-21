@@ -137,16 +137,15 @@ export default function PatientPortal() {
                 <div className="text-sm font-medium text-yellow-500">{row.status}</div>
                 <div className="flex gap-2">
                 {console.log(start)}
-                  {start?(
-                    <Button onClick={()=>handleJoinRoom(row._id)} size="sm" variant="outline">
+                <Button
+                    onClick={() => handleJoinRoom(row._id)}
+                    size="sm"
+                    variant="outline"
+                    disabled={row.status === "completed" || row.status !=="confirmed"}
+                  >
                     Join Meeting
                   </Button>
-                  ):(
-                    <Button disabled size="sm" variant="outline">
-                    Join Meeting
-                  </Button>
-                  )}
-                  <Button size="sm" variant="outline">
+                  <Button size="sm" variant="outline" disabled={row.status === "completed"}>
                     Cancel Request
                   </Button>
                 </div>
@@ -159,12 +158,13 @@ export default function PatientPortal() {
           </div>
         </div>
       </CardContent>
-      <CardFooter>
-        <Button className="ml-auto bg-purple-600">Logout</Button>
-      </CardFooter>
+      {/* <CardFooter>
+        <Button className="ml-auto bg-purple-600" onClick={logout}>Logout</Button>
+      </CardFooter> */}
     </Card>
   );
 }
+
 
 
 function MountainIcon(props) {
