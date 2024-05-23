@@ -11,7 +11,12 @@ export default defineConfig({
    },
  },
  server: {
-  host: '0.0.0.0', // Bind to all network interfaces
-        // Optionally specify the port
+  proxy: {
+    '/api': {
+      target: 'http://ser-docease-env.eba-4mzxiqrh.ap-south-1.elasticbeanstalk.com',
+      changeOrigin: true,
+      rewrite: (path) => path.replace(/^\/api/, ''),
+    },
+  },
 },
 })
