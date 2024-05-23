@@ -20,9 +20,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import io from "socket.io-client"
 import { useNavigate } from "react-router-dom"
+import {CONFIG} from "../constants/constant"
 
-
-const socket = io("http://192.168.65.51:8080")
+const socket = io(`${CONFIG.apiurl}:8080`)
 
 
 export default function DoctorsPortal() {
@@ -65,7 +65,7 @@ export default function DoctorsPortal() {
 
     const getAllAppt = async () => {
       try {
-        const { data } = await axios.post("http://192.168.65.51:8080/api/appt/doctor", {
+        const { data } = await axios.post(`${CONFIG.apiurl}/api/appt/doctor`, {
           doctorId: user._id,
         });
         
@@ -85,7 +85,7 @@ export default function DoctorsPortal() {
 
   const handleDecline =async (id)=>{
     try {
-        const {data} = await axios.post("http://192.168.65.51:8080/api/appt/decline",{
+        const {data} = await axios.post(`${CONFIG.apiurl}/api/appt/decline`,{
           id
         })
         console.log(data)
@@ -101,7 +101,7 @@ export default function DoctorsPortal() {
   }
   const handleAccept = async(id)=>{
     try {
-      const { data } = await axios.post("http://192.168.65.51:8080/api/appt/accept", { id });
+      const { data } = await axios.post(`${CONFIG.apiurl}/api/appt/accept`, { id });
       socket.emit('appointmentUpdated', data); 
        setStart(true)
     } catch (error) {

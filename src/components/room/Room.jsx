@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {ZegoUIKitPrebuilt} from "@zegocloud/zego-uikit-prebuilt"
 import { UserState } from "@/context/UserProvider";
 import axios from "axios";
-
+import {CONFIG} from "../../constants/constant"
 
 const Room = ()=>{
 
@@ -24,7 +24,7 @@ const Room = ()=>{
             showScreenSharingButton:false,
             onLeaveRoom:async()=>{
 
-                const updatedStatusAppt = await axios.post("http://localhost:8080/api/appt/updatestatus",{id:roomid})
+                const updatedStatusAppt = await axios.post(`${CONFIG.apiurl}/api/appt/updatestatus`,{id:roomid})
                 console.log("This is updated status",updatedStatusAppt)
                 console.log(user.role)
                 if(user.role==='doctor')

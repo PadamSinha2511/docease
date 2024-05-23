@@ -17,6 +17,7 @@ import Btn from '../components/patientportal/appointment-button.jsx'
 import { useEffect, useState } from 'react'
 import { UserState } from '@/context/UserProvider'
 import axios from 'axios'
+import {CONFIG} from '../constants/constant'
 
 export default function DoctorsView() {
 
@@ -29,7 +30,7 @@ export default function DoctorsView() {
       const handleFetchAllDoc =async()=>{
 
         setLoading(true)
-        const {data} = await axios.get("http://localhost:8080/api/doctor/all");
+        const {data} = await axios.get(`${CONFIG.apiurl}/api/doctor/all`);
         setAllDocs(data.allDocs);
         setLoading(false)
         console.log(data.allDocs)

@@ -3,7 +3,7 @@ import { Button } from "@/components/patientportal/AppointmentButton/ui/button"
 import { DialogTrigger, DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogContent, Dialog } from "@/components/patientportal/AppointmentButton/ui/dialog"
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import {CONFIG} from "../../constants/constant"
 
 export default function AppointmentButton({pid,did}) {
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
@@ -16,7 +16,7 @@ export default function AppointmentButton({pid,did}) {
     
     try{
       setLoading(true)
-      const {data} = await axios.post("http://localhost:8080/api/appt/book",
+      const {data} = await axios.post(`${CONFIG.apiurl}/api/appt/book`,
         {
           patientId:pid,
           doctorId:did

@@ -15,8 +15,9 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import io from "socket.io-client"
 import { useNavigate } from "react-router-dom"
+import {CONFIG} from "../constants/constant"
 
-const socket = io("http://localhost:8080");
+const socket = io(`${CONFIG.apiurl}`);
 
 export default function PatientPortal() {
   const {user,loading,setUser} = UserState();
@@ -28,7 +29,7 @@ export default function PatientPortal() {
 
     const getAllAppt = async () => {
       try {
-        const { data } = await axios.post("http://localhost:8080/api/appt/patient", {
+        const { data } = await axios.post(`${CONFIG.apiurl}/api/appt/patient`, {
           patientId: user._id,
         });
 
@@ -78,7 +79,7 @@ export default function PatientPortal() {
 
   return (
     <Card className="border">
-      {console.log(allAppt)}
+      {/* {console.log(allAppt)} */}
         <><Navbar/></>
       <CardHeader>
         <CardTitle>Your Profile</CardTitle>

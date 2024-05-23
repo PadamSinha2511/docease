@@ -15,7 +15,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import axios from 'axios';
 import { UserState } from '@/context/UserProvider';
 import { useNavigate } from 'react-router-dom';
-
+import {CONFIG} from "../../constants/constant"
 export default function Signup(){
   const defaultTheme = createTheme();
 
@@ -71,7 +71,7 @@ export default function Signup(){
     
       if(role ==='patient')
         {
-           const {data} = await axios.post("http://localhost:8080/api/patient/signup",{
+           const {data} = await axios.post(`${CONFIG.apiurl}/api/patient/signup`,{
             name:signupState.name,
             email:signupState.email,
             password:signupState.password,
@@ -84,7 +84,7 @@ export default function Signup(){
         
         }
         else{
-          const {data} = await axios.post("http://localhost:8080/api/doctor/signup",{
+          const {data} = await axios.post(`${CONFIG.apiurl}/api/doctor/signup`,{
             name:signupState.name,
             email:signupState.email,
             password:signupState.password,

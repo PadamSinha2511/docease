@@ -64,7 +64,7 @@
   
 //       if(isDoctor)
 //         {
-//    const {data} = await axios.post("http://localhost:8080/api/doctor/signin",
+//    const {data} = await axios.post("${CONFIG.apiurl}/api/doctor/signin",
 //             {email,password},
 //             config
 //             )
@@ -74,7 +74,7 @@
 //              navigate("/doctorspage")
 //         }
 //         else{ 
-//             const {data} = await axios.post("http://localhost:8080/api/patient/signin",
+//             const {data} = await axios.post("${CONFIG.apiurl}/api/patient/signin",
 //             {email,password},
 //             config
 //             )
@@ -245,6 +245,8 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { toast } from 'react-toastify'; // Add this if you're using react-toastify
 import { UserState } from '@/context/UserProvider';
+import {CONFIG} from '../../constants/constant'
+
 
 const defaultTheme = createTheme();
 
@@ -283,12 +285,12 @@ export default function Login() {
 
       let response;
       if (isDoctor) {
-        response = await axios.post("http://192.168.65.51:8080/api/doctor/signin",
+        response = await axios.post(`${CONFIG.apiurl}/api/doctor/signin`,
           { email, password },
           config
         );
       } else {
-        response = await axios.post("http://localhost:8080/api/patient/signin",
+        response = await axios.post(`${CONFIG.apiurl}/api/patient/signin`,
           { email, password },
           config
         );
@@ -322,6 +324,7 @@ export default function Login() {
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
+        
         <Box
           sx={{
             marginTop: 8,
@@ -385,7 +388,7 @@ export default function Login() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="http://localhost:5173/signup" variant="body2">
+                <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
