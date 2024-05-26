@@ -41,8 +41,8 @@ const Room = ()=>{
         
     }
     return(
-        <div>
-            <div ref={myMeeting}/>
+        <div className="flex justify-center items-center h-screen">
+            <div className="w-full max-w-4xl h-[80vh] border border-gray-300 rounded-lg overflow-hidden" ref={myMeeting}/>
         </div>
     )
 }
