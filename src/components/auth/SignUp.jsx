@@ -16,6 +16,8 @@ import axios from 'axios';
 import { UserState } from '@/context/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import {CONFIG} from "../../constants/constant"
+// import { Input } from '@mui/material';
+// import { Photo } from '@mui/icons-material';
 export default function Signup(){
   const defaultTheme = createTheme();
 
@@ -28,7 +30,8 @@ export default function Signup(){
     password: '',
     phoneNumber: '',
     age: '',
-    medicalHistory: ''
+    medicalHistory: '',
+    
   });
 
   const [doctorSignupState, setDoctorSignupState] = useState({
@@ -37,7 +40,8 @@ export default function Signup(){
     password: '',
     phoneNumber: '',
     specialty: '',
-    experience: ''
+    experience: '',
+    
   });
 
   const handlePatientChange = (e) => {
@@ -68,6 +72,8 @@ export default function Signup(){
 
     
     try {
+
+      
     
       if(role ==='patient')
         {
@@ -77,7 +83,9 @@ export default function Signup(){
             password:signupState.password,
             phoneNumber: signupState.phoneNumber,
             age:signupState.age,
-            medicalHistory: signupState.medicalHistory
+            medicalHistory: signupState.medicalHistory,
+            photo:signupState.pic
+
            })
 
           
@@ -90,7 +98,8 @@ export default function Signup(){
             password:signupState.password,
             phoneNumber: signupState.phoneNumber,
             specialty:signupState.specialty,
-            experience: signupState.experience
+            experience: signupState.experience,
+            photo:signupState.pic
            })
         }
 
@@ -193,6 +202,7 @@ export default function Signup(){
                 autoComplete="medicalHistory"
                 onChange={handlePatientChange}
               />
+
               <Button
                 type="submit"
                 fullWidth
@@ -267,6 +277,7 @@ export default function Signup(){
                 autoComplete="experience"
                 onChange={handleDoctorChange}
               />
+               
               <Button
                 type="submit"
                 fullWidth
@@ -279,7 +290,7 @@ export default function Signup(){
           )}
           <Grid container>
             <Grid item>
-              <Link href="http://localhost:5173/login" variant="body2">
+              <Link href="/login" variant="body2">
                 {"Have an account? Login"}
               </Link>
             </Grid>

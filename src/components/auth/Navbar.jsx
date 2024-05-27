@@ -33,7 +33,7 @@ export default function NavbarDark() {
       <div className="flex flex-wrap items-center justify-between gap-y-4 text-black font-serif">
         <Typography
           as="a"
-          href="http://localhost:5173/"
+          href="/"
           variant="h6"
           className="mr-4 ml-2 cursor-pointer py-1.5"
         >
