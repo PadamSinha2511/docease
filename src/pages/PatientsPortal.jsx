@@ -16,7 +16,7 @@ import axios from "axios"
 import io from "socket.io-client"
 import { useNavigate } from "react-router-dom"
 import {CONFIG} from "../constants/constant"
-
+import moment from "moment"
 const socket = io(`${CONFIG.apiurl}`);
 
 export default function PatientPortal() {
@@ -77,6 +77,19 @@ export default function PatientPortal() {
     navigate(`/room/${roomid}`)
   }
 
+  const formatDate = (isoDate) => {
+    const date = new Date(isoDate);
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    });
+  };
+
   return (
     <Card className="border">
       {/* {console.log(allAppt)} */}
@@ -131,8 +144,8 @@ export default function PatientPortal() {
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500 dark:text-gray-400">Headache</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">10:00 AM</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">Time</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">{formatDate(row.createdAt)}</div>
               </div>
               <div className="flex items-center justify-between gap-2">
                 <div className="text-sm font-medium text-yellow-500">{row.status}</div>
