@@ -145,7 +145,7 @@ export default function PatientPortal() {
               </div>
               <div className="flex items-center justify-between">
                 <div className="text-sm text-gray-500 dark:text-gray-400">Time</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">{formatDate(row.createdAt)}</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">{row.createdAt}</div>
               </div>
               <div className="flex items-center justify-between gap-2">
                 <div className="text-sm font-medium text-yellow-500">{row.status}</div>
