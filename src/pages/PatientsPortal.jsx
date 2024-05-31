@@ -17,7 +17,7 @@ import io from "socket.io-client"
 import { useNavigate } from "react-router-dom"
 import {CONFIG} from "../constants/constant"
 import moment from "moment"
-const socket = io(`${CONFIG.apiurl}`);
+const socket = io(`${CONFIG.apiurl}:8080`);
 
 export default function PatientPortal() {
   const {user,loading,setUser} = UserState();

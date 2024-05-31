@@ -5,6 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import FormLabel from '@mui/material/FormLabel';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -31,6 +32,7 @@ export default function Signup(){
     phoneNumber: '',
     age: '',
     medicalHistory: '',
+    photo:''
     
   });
 
@@ -41,7 +43,7 @@ export default function Signup(){
     phoneNumber: '',
     specialty: '',
     experience: '',
-    
+    photo:''
   });
 
   const handlePatientChange = (e) => {
@@ -53,6 +55,38 @@ export default function Signup(){
     const { name, value } = e.target;
     setDoctorSignupState(prevState => ({ ...prevState, [name]: value }));
   }
+
+  const handleImageUpload = (pics,role)=>{
+    
+    console.log(pics)
+    setLoading(true)
+    if(pics.type === 'image/jpeg' || pics.type ==='image/png')
+      {
+        const imageData  = new FormData();
+        imageData.append('file',pics)
+        imageData.append('upload_preset','docease_user')
+        imageData.append('cloud_name',"dmq4qgvog")
+        fetch('https://api.cloudinary.com/v1_1/dmq4qgvog/image/upload',{
+          method:"post",
+          body:imageData
+        }).then(res=>res.json())
+        .then(data=>{
+
+          if(role ==='patient' )
+            {
+             setPatientSignupState(prevState=>({...prevState,photo:data.url.toString()}))
+            }
+          else
+          {
+            setDoctorSignupState(prevState=>({...prevState,photo:data.url.toString()}))
+          }
+        
+          console.log(data.url.toString())
+          setLoading(false)
+        })
+      }
+  }
+
 
   const handlePatientSubmit = async(e) => {
     e.preventDefault();
@@ -84,7 +118,7 @@ export default function Signup(){
             phoneNumber: signupState.phoneNumber,
             age:signupState.age,
             medicalHistory: signupState.medicalHistory,
-            photo:signupState.pic
+            photo:signupState.photo
 
            })
 
@@ -99,7 +133,7 @@ export default function Signup(){
             phoneNumber: signupState.phoneNumber,
             specialty:signupState.specialty,
             experience: signupState.experience,
-            photo:signupState.pic
+            photo:signupState.photo
            })
         }
 
@@ -203,6 +237,23 @@ export default function Signup(){
                 onChange={handlePatientChange}
               />
 
+              <FormLabel
+                variant="contained"
+                component="label"
+                fullWidth
+                sx={{ mt: 2 }}
+              >
+               {patientSignupState.photo?patientSignupState.photo:"Upload Photo"}
+               </FormLabel>
+                <input
+                  type="file"
+                  
+                  name="photo"
+                  accept="image/*"
+                  onChange={(e)=>handleImageUpload(e.target.files[0],"patient")}
+                />
+             
+
               <Button
                 type="submit"
                 fullWidth
@@ -277,6 +328,21 @@ export default function Signup(){
                 autoComplete="experience"
                 onChange={handleDoctorChange}
               />
+               <FormLabel
+                variant="contained"
+                component="label"
+                fullWidth
+                sx={{ mt: 2 }}
+              >
+               {doctorSignupState.photo?doctorSignupState.photo:"Upload Photo"}
+               </FormLabel>
+                <input
+                  type="file"
+                  
+                  name="photo"
+                  accept="image/*"
+                  onChange={(e)=>handleImageUpload(e.target.files[0],"doctor")}
+                />
                
               <Button
                 type="submit"
