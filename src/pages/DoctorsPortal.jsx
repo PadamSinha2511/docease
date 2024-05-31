@@ -22,7 +22,7 @@ import io from "socket.io-client"
 import { useNavigate } from "react-router-dom"
 import {CONFIG} from "../constants/constant"
 
-const socket = io(`${CONFIG.apiurl}:8080`)
+const socket = io(`${CONFIG.apiurl}`)
 
 
 export default function DoctorsPortal() {
