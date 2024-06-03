@@ -98,9 +98,9 @@ export default function DoctorsView() {
                   <div className="text-lg font-semibold">{doc.name}</div>
                   <div className="text-sm text-gray-500">{doc.specialty}</div>
                   <div className="text-xs text-green-500">Online & Available</div>
-                  <p className="text-sm text-gray-500">
+                  {/* <p className="text-sm text-gray-500">
                     Qualifications: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </p>
+                  </p> */}
                   <div className="text-sm text-gray-500">Rating: 4.5/5</div>
                   <div className="text-sm text-gray-500">Experience: {doc.experience} years</div>
                   <Btn pid={user._id} did={doc._id}/>
