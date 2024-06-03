@@ -102,7 +102,7 @@ export default function PatientPortal() {
               alt="Your Avatar"
               className="rounded-full"
               height="48"
-              src={user.photo}
+              src={""}
               style={{
                 aspectRatio: "48/48",
                 objectFit: "cover",

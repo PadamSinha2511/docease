@@ -121,143 +121,19 @@ export default function DoctorsPortal() {
     return <div>No user found...</div>; // You can return a loading spinner here
   }
   
-  // return (
-  //   (
-  //   <Card className="border">
-  //     <><Navbar/></>
-
-  //     <CardHeader>
-  //       <CardTitle className="mb-4">Your Profile</CardTitle>
-  //       <CardContent className="border p-4">
-  //         <div className="flex items-center gap-4">
-  //           <img
-  //             alt="Your Avatar"
-  //             className="rounded-full"
-  //             height="48"
-  //             src={user.photo}
-  //             style={{
-  //               aspectRatio: "48/48",
-  //               objectFit: "cover",
-  //             }}
-  //             width="48" />
-  //           <div>
-  //             <div className="font-semibold text-lg">{user.name}</div>
-  //             <div className="text-sm text-gray-500 dark:text-gray-400">{user.specialty}</div>
-  //             <div className="text-sm text-gray-500 dark:text-gray-400">Experience : {user.experience}</div>
-  //           </div>
-  //         </div>
-  //       </CardContent>
-  //     </CardHeader>
-  //     <CardHeader>
-  //       <CardTitle>Appointments</CardTitle>
-  //       <CardDescription>
-  //         View and manage appointment requests. Also mention the problem of the patient.
-  //       </CardDescription>
-  //     </CardHeader>
-  //     <CardContent className="flex flex-col gap-4">
-  //       <div className="flex flex-col gap-3">
-  //         <div className="grid gap-1 text-sm md:grid-cols-4 xl:grid-cols-5">
-  //           <div className="font-semibold">Patients</div>
-  //           <div className="font-semibold">Status</div>
-  //           <div className="font-semibold">Time</div>
-  //           <div className="font-semibold">Actions</div>
-  //           <div className="font-semibold">Problem</div>
-  //         </div>
-  //         <div className="grid gap-3 md:grid-cols-4 xl:grid-cols-5">
-  //           <div className="flex items-center gap-2 text-sm">
-  //             <img
-  //               alt="Avatar"
-  //               className="rounded-full"
-  //               height="32"
-  //               src= {PateintImage1}
-  //               style={{
-  //                 aspectRatio: "32/32",
-  //                 objectFit: "cover",
-  //               }}
-  //               width="32" />
-  //             <div className="font-semibold">Alice Johnson</div>
-  //           </div>
-  //           <div className="text-sm">Pending</div>
-  //           <div className="text-sm">10:00 AM</div>
-  //           <div className="flex items-center gap-2 text-sm">
-  //             <Button className = "bg-purple-600" size="sm">Accept</Button>
-  //             <Button size="sm" variant="outline">
-  //               Decline
-  //             </Button>
-  //           </div>
-  //           <div className="text-sm">Headache</div>
-  //           <div className="flex items-center gap-2 text-sm">
-  //             <img
-  //               alt="Avatar"
-  //               className="rounded-full"
-  //               height="32"
-  //               src={PateintImage2}
-  //               style={{
-  //                 aspectRatio: "32/32",
-  //                 objectFit: "cover",
-  //               }}
-  //               width="32" />
-  //             <div className="font-semibold">Bob Smith</div>
-  //           </div>
-  //           <div className="text-sm">Accepted</div>
-  //           <div className="text-sm">10:30 AM</div>
-  //           <div className="flex items-center gap-2 text-sm">
-  //             <Button className = "bg-purple-600" size="sm">Accept</Button>
-  //             <Button size="sm" variant="outline">
-  //               Decline
-  //             </Button>
-  //           </div>
-  //           <div className="text-sm">Fever</div>
-  //           <div className="flex items-center gap-2 text-sm">
-  //             <img
-  //               alt="Avatar"
-  //               className="rounded-full"
-  //               height="32"
-  //               src={PateintImage3}
-  //               style={{
-  //                 aspectRatio: "32/32",
-  //                 objectFit: "cover",
-  //               }}
-  //               width="32" />
-  //             <div className="font-semibold">Ella Martinez</div>
-  //           </div>
-  //           <div className="text-sm">Declined</div>
-  //           <div className="text-sm">11:00 AM</div>
-  //           <div className="flex items-center gap-2 text-sm">
-  //             <Button className = "bg-purple-600" size="sm">Accept</Button>
-  //             <Button size="sm" variant="outline">
-  //               Decline
-  //             </Button>
-  //           </div>
-  //           <div className="text-sm">Cough</div>
-  //           <div className="flex items-center gap-2 text-sm">
-  //             <img
-  //               alt="Avatar"
-  //               className="rounded-full"
-  //               height="32"
-  //               src={PateintImage4}
-  //               style={{
-  //                 aspectRatio: "32/32",
-  //                 objectFit: "cover",
-  //               }}
-  //               width="32" />
-  //             <div className="font-semibold">John Doe</div>
-  //           </div>
-  //           <div className="text-sm">Pending</div>
-  //           <div className="text-sm">11:00 AM</div>
-  //           <div className="flex items-center gap-2 text-sm">
-  //             <Button className = "bg-purple-600" size="sm">Accept</Button>
-  //             <Button size="sm" variant="outline">
-  //               Decline
-  //             </Button>
-  //           </div>
-  //           <div className="text-sm">Hypertension</div>
-  //         </div>
-  //       </div>
-  //     </CardContent>
-  //   </Card>)
-  // );
-
+ 
+  const formatDate = (isoDate) => {
+    const date = new Date(isoDate);
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    });
+  };
   return (
    <>
     <Card className="border">
@@ -313,7 +189,7 @@ export default function DoctorsPortal() {
                 {row.patientId.name}
               </StyledTableCell>
               <StyledTableCell align="right">{row.status}</StyledTableCell>
-              <StyledTableCell align="right">Time</StyledTableCell>
+              <StyledTableCell align="right">{formatDate(row.createdAt)}</StyledTableCell>
               <StyledTableCell align="right">
             {console.log(row.status)}
               {start && row.status !== "completed"?(
