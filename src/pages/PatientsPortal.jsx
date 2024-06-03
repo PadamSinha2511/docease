@@ -139,27 +139,27 @@ export default function PatientPortal() {
                   }}
                   width="40" />
                 <div>
-                  <div className="font-semibold">{row.doctorId.name}</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">{row.doctorId.specialty}</div>
+                  <div className="font-semibold">{row?.doctorId?.name}</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">{row?.doctorId?.specialty}</div>
                 </div>
               </div>
               <div className="flex items-center justify-between">
                 <div className="text-sm text-gray-500 dark:text-gray-400">Time</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">{row.createdAt}</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">{row?.createdAt}</div>
               </div>
               <div className="flex items-center justify-between gap-2">
-                <div className="text-sm font-medium text-yellow-500">{row.status}</div>
+                <div className="text-sm font-medium text-yellow-500">{row?.status}</div>
                 <div className="flex gap-2">
                 {console.log(start)}
                 <Button
-                    onClick={() => handleJoinRoom(row._id)}
+                    onClick={() => handleJoinRoom(row?._id)}
                     size="sm"
                     variant="outline"
-                    disabled={row.status === "completed" || row.status !=="confirmed"}
+                    disabled={row?.status === "completed" || row?.status !=="confirmed"}
                   >
                     Join Meeting
                   </Button>
-                  <Button size="sm" variant="outline" disabled={row.status === "completed"}>
+                  <Button size="sm" variant="outline" disabled={row?.status === "completed"}>
                     Cancel Request
                   </Button>
                 </div>
