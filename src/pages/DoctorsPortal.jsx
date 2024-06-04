@@ -156,7 +156,7 @@ export default function DoctorsPortal() {
            <div>
              <div className="font-semibold text-lg">{user.name}</div>
              <div className="text-sm text-gray-500 dark:text-gray-400">{user.specialty}</div>
-             <div className="text-sm text-gray-500 dark:text-gray-400">Experience : {user.experience}</div>
+             <div className="text-sm text-gray-500 dark:text-gray-400">Experience : {user.experience} years</div>
           </div>
 
          </div>
@@ -179,7 +179,7 @@ export default function DoctorsPortal() {
             <StyledTableCell align="right">Status</StyledTableCell>
             <StyledTableCell align="right">Time</StyledTableCell>
             <StyledTableCell align="right">Action</StyledTableCell>
-            <StyledTableCell align="right">Problem</StyledTableCell>
+            <StyledTableCell align="right">Medical History</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
